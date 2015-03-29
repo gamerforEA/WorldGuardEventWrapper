@@ -1,0 +1,5 @@
+name: WorldGuardEventWrapper
+version: 1.0
+author: gamerforEA
+main: com.gamerforea.wgew.WorldGuardEventWrapperPlugin
+depend: [WorldGuard]
