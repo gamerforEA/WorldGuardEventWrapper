@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gamerforea.wgew.WorldGuardEventWrapperPlugin;
 import com.gamerforea.wgew.cauldron.event.CauldronBlockBreakEvent;
+import com.gamerforea.wgew.cauldron.event.CauldronBlockFromToFaceEvent;
+import com.gamerforea.wgew.cauldron.event.CauldronBlockFromToPosEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronBlockPlaceEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronEntityDamageByBlockEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronEntityDamageByEntityEvent;
@@ -83,5 +85,21 @@ public class CauldronListener implements org.bukkit.event.Listener
 		Entity damagee = getBukkitEntity(event.damagee);
 		Block damager = damagee.getWorld().getBlockAt(event.x, event.y, event.z);
 		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callEntityDamageByBlock(damager, damagee, event.cause, event.damage));
+	}
+
+	@EventHandler
+	public void onBlockFromToPos(CauldronBlockFromToPosEvent event)
+	{
+		Block from = event.world.getWorld().getBlockAt(event.xFrom, event.yFrom, event.zFrom);
+		Block to = event.world.getWorld().getBlockAt(event.xTo, event.yTo, event.zTo);
+		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
+	}
+
+	@EventHandler
+	public void onBlockFromToFace(CauldronBlockFromToFaceEvent event)
+	{
+		Block from = event.world.getWorld().getBlockAt(event.xFrom, event.yFrom, event.zFrom);
+		Block to = from.getRelative(event.face);
+		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
 	}
 }
