@@ -1,5 +1,6 @@
 package com.gamerforea.wgew;
 
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -20,8 +21,10 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gamerforea.wgew.cauldron.CauldronListener;
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.bukkit.listener.EventAbstractionListener;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 public class WorldGuardEventWrapperPlugin extends JavaPlugin
 {
@@ -44,6 +47,15 @@ public class WorldGuardEventWrapperPlugin extends JavaPlugin
 			new CauldronListener(this).init();
 		}
 		else this.getLogger().warning("WorldGuard EventAbstractionListener hooking - fail.");
+	}
+
+	public static boolean isInPrivate(World world, int x, int y, int z)
+	{
+		for (ProtectedRegion region : WorldGuardPlugin.inst().getRegionManager(world).getApplicableRegions(new Vector(x, y, z)))
+		{
+			if (!region.getId().equals(ProtectedRegion.GLOBAL_REGION)) return true;
+		}
+		return false;
 	}
 
 	public static BlockBreakEvent callPlayerBlockBreak(Player player, Block block)

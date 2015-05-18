@@ -20,6 +20,7 @@ import com.gamerforea.wgew.cauldron.event.CauldronBlockFromToPosEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronBlockPlaceEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronEntityDamageByBlockEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronEntityDamageByEntityEvent;
+import com.gamerforea.wgew.cauldron.event.CauldronIsInPrivateEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronPlayerInteractEntityEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronPlayerInteractEvent;
 
@@ -101,5 +102,11 @@ public class CauldronListener implements org.bukkit.event.Listener
 		Block from = event.world.getWorld().getBlockAt(event.xFrom, event.yFrom, event.zFrom);
 		Block to = from.getRelative(event.face);
 		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
+	}
+
+	@EventHandler
+	public void onIsInPrivate(CauldronIsInPrivateEvent event)
+	{
+		event.isInPrivate = WorldGuardEventWrapperPlugin.isInPrivate(event.world.getWorld(), event.x, event.y, event.z);
 	}
 }
