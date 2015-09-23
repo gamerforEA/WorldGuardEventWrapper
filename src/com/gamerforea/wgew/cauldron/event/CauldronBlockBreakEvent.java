@@ -1,12 +1,12 @@
 package com.gamerforea.wgew.cauldron.event;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class CauldronBlockBreakEvent extends Event
+import net.minecraft.entity.player.EntityPlayer;
+
+public final class CauldronBlockBreakEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 	private BlockBreakEvent bukkitEvent;
@@ -24,23 +24,23 @@ public class CauldronBlockBreakEvent extends Event
 		this.z = z;
 	}
 
-	public BlockBreakEvent getBukkitEvent()
+	public final BlockBreakEvent getBukkitEvent()
 	{
-		return bukkitEvent;
+		return this.bukkitEvent;
 	}
 
-	public void setBukkitEvent(BlockBreakEvent bukkitEvent)
+	public final void setBukkitEvent(BlockBreakEvent bukkitEvent)
 	{
 		this.bukkitEvent = bukkitEvent;
 	}
 
 	@Override
-	public HandlerList getHandlers()
+	public final HandlerList getHandlers()
 	{
 		return handlers;
 	}
 
-	public static HandlerList getHandlerList()
+	public static final HandlerList getHandlerList()
 	{
 		return handlers;
 	}

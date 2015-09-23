@@ -11,6 +11,7 @@ import org.bukkit.craftbukkit.v1_7_R4.block.CraftBlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import com.gamerforea.wgew.WorldGuardEventWrapperPlugin;
@@ -18,95 +19,90 @@ import com.gamerforea.wgew.cauldron.event.CauldronBlockBreakEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronBlockFromToFaceEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronBlockFromToPosEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronBlockPlaceEvent;
+import com.gamerforea.wgew.cauldron.event.CauldronCanDropEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronEntityDamageByBlockEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronEntityDamageByEntityEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronIsInPrivateEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronPlayerInteractEntityEvent;
 import com.gamerforea.wgew.cauldron.event.CauldronPlayerInteractEvent;
 
-public class CauldronListener implements org.bukkit.event.Listener
+public final class CauldronListener implements Listener
 {
-	private WorldGuardEventWrapperPlugin plugin;
-
-	public CauldronListener(WorldGuardEventWrapperPlugin plugin)
+	@EventHandler
+	public final void onBlockBreak(CauldronBlockBreakEvent e)
 	{
-		this.plugin = plugin;
-	}
-
-	public void init()
-	{
-		this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+		Player player = getBukkitPlayer(e.player);
+		Block block = e.player.field_70170_p.getWorld().getBlockAt(e.x, e.y, e.z);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerBlockBreak(player, block));
 	}
 
 	@EventHandler
-	public void onBlockBreak(CauldronBlockBreakEvent event)
+	public final void onBlockPlace(CauldronBlockPlaceEvent e)
 	{
-		Player p = getBukkitPlayer(event.player);
-		Block b = event.player.field_70170_p.getWorld().getBlockAt(event.x, event.y, event.z);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerBlockBreak(p, b));
+		Player player = getBukkitPlayer(e.player);
+		BlockState state = CraftBlockState.getBlockState(e.player.field_70170_p, e.x, e.y, e.z);
+		ItemStack stack = getBukkitItemStack(new net.minecraft.item.ItemStack(e.block));
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerBlockPlace(player, state, stack, e.x, e.y, e.z, canBuild(e.player.field_70170_p.getWorld(), player, e.x, e.z)));
 	}
 
 	@EventHandler
-	public void onBlockPlace(CauldronBlockPlaceEvent event)
+	public final void onPlayerInteract(CauldronPlayerInteractEvent e)
 	{
-		Player p = getBukkitPlayer(event.player);
-		BlockState state = CraftBlockState.getBlockState(event.player.field_70170_p, event.x, event.y, event.z);
-		ItemStack stack = getBukkitItemStack(new net.minecraft.item.ItemStack(event.block));
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerBlockPlace(p, state, stack, event.x, event.y, event.z, canBuild(event.player.field_70170_p.getWorld(), p, event.x, event.z)));
+		Player player = getBukkitPlayer(e.player);
+		ItemStack stack = getBukkitItemStack(e.item);
+		Block block = e.player.field_70170_p.getWorld().getBlockAt(e.x, e.y, e.z);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerInteract(player, e.action, stack, block, e.face));
 	}
 
 	@EventHandler
-	public void onPlayerInteract(CauldronPlayerInteractEvent event)
+	public final void onPlayerInteractEntity(CauldronPlayerInteractEntityEvent e)
 	{
-		Player p = getBukkitPlayer(event.player);
-		ItemStack stack = getBukkitItemStack(event.item);
-		Block b = event.player.field_70170_p.getWorld().getBlockAt(event.x, event.y, event.z);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerInteract(p, event.action, stack, b, event.face));
+		Player player = getBukkitPlayer(e.player);
+		Entity entity = getBukkitEntity(e.entity);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerInteractEntity(player, entity));
 	}
 
 	@EventHandler
-	public void onPlayerInteractEntity(CauldronPlayerInteractEntityEvent event)
+	public final void onEntityDamageByEntity(CauldronEntityDamageByEntityEvent e)
 	{
-		Player p = getBukkitPlayer(event.player);
-		Entity e = getBukkitEntity(event.entity);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callPlayerInteractEntity(p, e));
+		Entity damager = getBukkitEntity(e.damager);
+		Entity damagee = getBukkitEntity(e.damagee);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callEntityDamageByEntity(damager, damagee, e.cause, e.damage));
 	}
 
 	@EventHandler
-	public void onEntityDamageByEntity(CauldronEntityDamageByEntityEvent event)
+	public final void onEntityDamageByBlock(CauldronEntityDamageByBlockEvent e)
 	{
-		Entity damager = getBukkitEntity(event.damager);
-		Entity damagee = getBukkitEntity(event.damagee);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callEntityDamageByEntity(damager, damagee, event.cause, event.damage));
+		Entity damagee = getBukkitEntity(e.damagee);
+		Block damager = damagee.getWorld().getBlockAt(e.x, e.y, e.z);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callEntityDamageByBlock(damager, damagee, e.cause, e.damage));
 	}
 
 	@EventHandler
-	public void onEntityDamageByBlock(CauldronEntityDamageByBlockEvent event)
+	public final void onBlockFromToPos(CauldronBlockFromToPosEvent e)
 	{
-		Entity damagee = getBukkitEntity(event.damagee);
-		Block damager = damagee.getWorld().getBlockAt(event.x, event.y, event.z);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callEntityDamageByBlock(damager, damagee, event.cause, event.damage));
+		Block from = e.world.getWorld().getBlockAt(e.xFrom, e.yFrom, e.zFrom);
+		Block to = e.world.getWorld().getBlockAt(e.xTo, e.yTo, e.zTo);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
 	}
 
 	@EventHandler
-	public void onBlockFromToPos(CauldronBlockFromToPosEvent event)
+	public final void onBlockFromToFace(CauldronBlockFromToFaceEvent e)
 	{
-		Block from = event.world.getWorld().getBlockAt(event.xFrom, event.yFrom, event.zFrom);
-		Block to = event.world.getWorld().getBlockAt(event.xTo, event.yTo, event.zTo);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
+		Block from = e.world.getWorld().getBlockAt(e.xFrom, e.yFrom, e.zFrom);
+		Block to = from.getRelative(e.face);
+		e.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
 	}
 
 	@EventHandler
-	public void onBlockFromToFace(CauldronBlockFromToFaceEvent event)
+	public final void onIsInPrivate(CauldronIsInPrivateEvent e)
 	{
-		Block from = event.world.getWorld().getBlockAt(event.xFrom, event.yFrom, event.zFrom);
-		Block to = from.getRelative(event.face);
-		event.setBukkitEvent(WorldGuardEventWrapperPlugin.callBlockFromToEvent(from, to));
+		e.isInPrivate = WorldGuardEventWrapperPlugin.isInPrivate(e.world.getWorld(), e.x, e.y, e.z);
 	}
 
 	@EventHandler
-	public void onIsInPrivate(CauldronIsInPrivateEvent event)
+	public final void onCanDrop(CauldronCanDropEvent e)
 	{
-		event.isInPrivate = WorldGuardEventWrapperPlugin.isInPrivate(event.world.getWorld(), event.x, event.y, event.z);
+		e.canDrop = WorldGuardEventWrapperPlugin.canDrop(e.world.getWorld(), e.x, e.y, e.z);
 	}
 }

@@ -1,13 +1,13 @@
 package com.gamerforea.wgew.cauldron.event;
 
-import net.minecraft.entity.Entity;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-public class CauldronEntityDamageByBlockEvent extends Event
+import net.minecraft.entity.Entity;
+
+public final class CauldronEntityDamageByBlockEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 	private EntityDamageByBlockEvent bukkitEvent;
@@ -29,23 +29,23 @@ public class CauldronEntityDamageByBlockEvent extends Event
 		this.damage = damage;
 	}
 
-	public EntityDamageByBlockEvent getBukkitEvent()
+	public final EntityDamageByBlockEvent getBukkitEvent()
 	{
-		return bukkitEvent;
+		return this.bukkitEvent;
 	}
 
-	public void setBukkitEvent(EntityDamageByBlockEvent bukkitEvent)
+	public final void setBukkitEvent(EntityDamageByBlockEvent bukkitEvent)
 	{
 		this.bukkitEvent = bukkitEvent;
 	}
 
 	@Override
-	public HandlerList getHandlers()
+	public final HandlerList getHandlers()
 	{
 		return handlers;
 	}
 
-	public static HandlerList getHandlerList()
+	public static final HandlerList getHandlerList()
 	{
 		return handlers;
 	}

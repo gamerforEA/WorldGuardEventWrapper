@@ -1,12 +1,12 @@
 package com.gamerforea.wgew.cauldron.event;
 
-import net.minecraft.world.World;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockFromToEvent;
 
-public class CauldronBlockFromToPosEvent extends Event
+import net.minecraft.world.World;
+
+public final class CauldronBlockFromToPosEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 	private BlockFromToEvent bukkitEvent;
@@ -30,23 +30,23 @@ public class CauldronBlockFromToPosEvent extends Event
 		this.zTo = zTo;
 	}
 
-	public BlockFromToEvent getBukkitEvent()
+	public final BlockFromToEvent getBukkitEvent()
 	{
-		return bukkitEvent;
+		return this.bukkitEvent;
 	}
 
-	public void setBukkitEvent(BlockFromToEvent bukkitEvent)
+	public final void setBukkitEvent(BlockFromToEvent bukkitEvent)
 	{
 		this.bukkitEvent = bukkitEvent;
 	}
 
 	@Override
-	public HandlerList getHandlers()
+	public final HandlerList getHandlers()
 	{
 		return handlers;
 	}
 
-	public static HandlerList getHandlerList()
+	public static final HandlerList getHandlerList()
 	{
 		return handlers;
 	}

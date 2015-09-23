@@ -1,13 +1,13 @@
 package com.gamerforea.wgew.cauldron.event;
 
-import net.minecraft.world.World;
-
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockFromToEvent;
 
-public class CauldronBlockFromToFaceEvent extends Event
+import net.minecraft.world.World;
+
+public final class CauldronBlockFromToFaceEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 	private BlockFromToEvent bukkitEvent;
@@ -27,23 +27,23 @@ public class CauldronBlockFromToFaceEvent extends Event
 		this.zFrom = zFrom;
 	}
 
-	public BlockFromToEvent getBukkitEvent()
+	public final BlockFromToEvent getBukkitEvent()
 	{
 		return this.bukkitEvent;
 	}
 
-	public void setBukkitEvent(BlockFromToEvent bukkitEvent)
+	public final void setBukkitEvent(BlockFromToEvent bukkitEvent)
 	{
 		this.bukkitEvent = bukkitEvent;
 	}
 
 	@Override
-	public HandlerList getHandlers()
+	public final HandlerList getHandlers()
 	{
 		return handlers;
 	}
 
-	public static HandlerList getHandlerList()
+	public static final HandlerList getHandlerList()
 	{
 		return handlers;
 	}

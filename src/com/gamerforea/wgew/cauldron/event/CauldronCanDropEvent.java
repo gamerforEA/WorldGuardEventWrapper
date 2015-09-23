@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 
 import net.minecraft.world.World;
 
-public final class CauldronIsInPrivateEvent extends Event
+public final class CauldronCanDropEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 
@@ -13,9 +13,9 @@ public final class CauldronIsInPrivateEvent extends Event
 	public final int x;
 	public final int y;
 	public final int z;
-	public boolean isInPrivate = false;
+	public boolean canDrop = true;
 
-	public CauldronIsInPrivateEvent(World world, int x, int y, int z)
+	public CauldronCanDropEvent(World world, int x, int y, int z)
 	{
 		this.world = world;
 		this.x = x;

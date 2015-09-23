@@ -1,13 +1,13 @@
 package com.gamerforea.wgew.cauldron.event;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
-public class CauldronPlayerInteractEntityEvent extends Event
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+
+public final class CauldronPlayerInteractEntityEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 	private PlayerInteractEntityEvent bukkitEvent;
@@ -21,23 +21,23 @@ public class CauldronPlayerInteractEntityEvent extends Event
 		this.entity = entity;
 	}
 
-	public PlayerInteractEntityEvent getBukkitEvent()
+	public final PlayerInteractEntityEvent getBukkitEvent()
 	{
-		return bukkitEvent;
+		return this.bukkitEvent;
 	}
 
-	public void setBukkitEvent(PlayerInteractEntityEvent bukkitEvent)
+	public final void setBukkitEvent(PlayerInteractEntityEvent bukkitEvent)
 	{
 		this.bukkitEvent = bukkitEvent;
 	}
 
 	@Override
-	public HandlerList getHandlers()
+	public final HandlerList getHandlers()
 	{
 		return handlers;
 	}
 
-	public static HandlerList getHandlerList()
+	public static final HandlerList getHandlerList()
 	{
 		return handlers;
 	}
